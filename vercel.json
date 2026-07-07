@@ -1,18 +1,5 @@
 {
-  "version": 2,
-  "name": "ecopulse-stadium",
-  "builds": [
-    {
-      "src": "**/*.html",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    { "src": "/", "dest": "/index.html" },
-    { "src": "/authority-dashboard", "dest": "/authority-dashboard/index.html" },
-    { "src": "/staff-app", "dest": "/staff-app/index.html" },
-    { "src": "/(.*)", "dest": "/$1" }
-  ],
+  "cleanUrls": true,
   "headers": [
     {
       "source": "/(.*)",
