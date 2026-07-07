@@ -5,9 +5,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>EcoPulse — Authority Operations Center · FIFA World Cup 2026</title>
   <meta name="description" content="EcoPulse Authority Dashboard — full operational intelligence center for FIFA World Cup 2026 organizers. Track crowd density, HVAC efficiency, waste management, staff roster, and real-time sustainability metrics across all 5 sectors."/>
-  <link rel="stylesheet" href="authority.css"/>
+  <link rel="stylesheet" href="/authority-dashboard/authority.css"/>
 </head>
 <body>
+
+  <!-- ═══════════════════════════════════════════════════════
+       PORTAL NAV BAR — links to all three EcoPulse portals
+  ═══════════════════════════════════════════════════════ -->
+  <div style="
+    position:sticky; top:0; z-index:200;
+    background:rgba(4,8,18,0.97);
+    backdrop-filter:blur(20px);
+    border-bottom:1px solid rgba(0,232,124,0.2);
+    padding:8px 28px;
+    display:flex; align-items:center; gap:12px;
+    font-family:'Outfit',sans-serif;
+  ">
+    <span style="font-size:0.62rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#4a5578;">EcoPulse Portals</span>
+    <div style="flex:1;height:1px;background:rgba(255,255,255,0.06);"></div>
+
+    <a href="/" style="
+      padding:5px 14px; border-radius:100px;
+      background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);
+      font-size:0.72rem; font-weight:700; color:#8899bb;
+      text-decoration:none; letter-spacing:0.04em;
+      display:flex; align-items:center; gap:6px;
+    ">⚡ Ops Engine</a>
+
+    <a href="/authority-dashboard" style="
+      padding:5px 14px; border-radius:100px;
+      background:rgba(45,156,255,0.12); border:1px solid rgba(45,156,255,0.28);
+      font-size:0.72rem; font-weight:700; color:#2d9cff;
+      text-decoration:none; letter-spacing:0.04em;
+      display:flex; align-items:center; gap:6px;
+    ">🏟️ Authority Dashboard</a>
+
+    <a href="/staff-app" style="
+      padding:5px 14px; border-radius:100px;
+      background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);
+      font-size:0.72rem; font-weight:700; color:#8899bb;
+      text-decoration:none; letter-spacing:0.04em;
+      display:flex; align-items:center; gap:6px;
+    ">👷 Staff App</a>
+
+    <div style="height:1px;background:rgba(255,255,255,0.06);flex:1;"></div>
+    <span style="font-size:0.6rem;color:#4a5578;font-family:'JetBrains Mono',monospace;">FIFA WC 2026</span>
+  </div>
 
 <!-- ══════════════════════════════════════════════════════
      LOGIN VIEW
@@ -385,8 +428,9 @@
   </div><!-- /main-area -->
 </div><!-- /dashboardView -->
 
-<script src="../telemetry.js"></script>
-<script src="../engine.js"></script>
+<!-- Scripts: load parent engine files via absolute path -->
+<script src="/telemetry.js"></script>
+<script src="/engine.js"></script>
 <script>
 /* ═══════════════════════════════════════════════════════════
    ECOPULSE AUTHORITY DASHBOARD — Controller
