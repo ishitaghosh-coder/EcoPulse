@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>EcoPulse — Ground Staff Portal · FIFA World Cup 2026</title>
+  <meta name="description" content="EcoPulse Ground Staff App — sign in to receive real-time role-based alerts, sector status, and operational tasks during FIFA World Cup 2026 matches."/>
+  <link rel="stylesheet" href="staff.css"/>
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ══════════════════════════════════════════════
+       LOGIN VIEW
+  ══════════════════════════════════════════════ -->
+  <div id="loginView" class="view active login-view">
+
+    <div class="login-logo">
+      <div class="login-logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#050810" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22V12"/><path d="M5 3s.55 7.07 3.5 9.5S17 14 17 14"/><path d="M19 3s-.55 7.07-3.5 9.5S7 14 7 14"/>
+          <line x1="12" y1="12" x2="8" y2="17"/>
+        </svg>
+      </div>
+      <span class="login-logo-text">EcoPulse<span>Stadium</span></span>
+    </div>
+    <div class="login-tagline">Ground Staff Portal · FIFA World Cup 2026</div>
+
+    <div class="login-card">
+      <div class="login-card-title">Sign In to Your Shift 👋</div>
+      <div class="login-card-sub">Enter your credentials to receive real-time alerts and tasks for your assigned sector.</div>
+
+      <form id="loginForm" autocomplete="off">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="staffName">Full Name</label>
+            <input id="staffName" type="text" placeholder="e.g. Alex Rivera" required/>
+          </div>
+          <div class="form-group">
+            <label for="staffId">Staff ID</label>
+            <input id="staffId" type="text" placeholder="ST-2026-XXXXX" required/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="staffRole">Your Role</label>
+          <select id="staffRole" required>
+            <option value="" disabled selected>Select your role…</option>
+            <option value="Security Officer">🛡️ Security Officer</option>
+            <option value="Cleaning Crew">🧹 Cleaning Crew</option>
+            <option value="Medical Staff">🏥 Medical Staff</option>
+            <option value="Tech Support">💻 Tech Support</option>
+            <option value="Event Volunteer">🌟 Event Volunteer</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="staffSector">Assigned Sector</label>
+          <select id="staffSector" required>
+            <option value="" disabled selected>Select your sector…</option>
+            <option value="north_concourse">North Concourse</option>
+            <option value="south_concourse">South Concourse</option>
+            <option value="east_concourse">East Concourse</option>
+            <option value="west_concourse">West Concourse</option>
+            <option value="pitch_zone">Pitch Zone</option>
+            <option value="all">All Areas (Rover)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="staffLang">Preferred Language</label>
+          <select id="staffLang">
+            <option value="en">🇺🇸 English</option>
+            <option value="es">🇲🇽 Español</option>
+            <option value="fr">🇫🇷 Français</option>
+            <option value="de">🇩🇪 Deutsch</option>
+            <option value="pt">🇧🇷 Português</option>
+            <option value="ar">🇸🇦 العربية</option>
+            <option value="zh">🇨🇳 中文</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-signin" id="signinBtn">Sign In to Shift →</button>
+      </form>
+    </div>
+
+    <div class="login-footer">
+      🔒 Secure staff-only portal &nbsp;·&nbsp; EcoPulse Stadium v1.0<br/>
+      MetLife Stadium · New York / New Jersey · Group A
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       DASHBOARD VIEW
+  ══════════════════════════════════════════════ -->
+  <div id="dashboardView" class="view dashboard-view">
+
+    <!-- Top Bar -->
+    <header class="dash-header" role="banner">
+      <div class="dash-logo-sm">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#050810" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22V12"/><path d="M5 3s.55 7.07 3.5 9.5S17 14 17 14"/><path d="M19 3s-.55 7.07-3.5 9.5S7 14 7 14"/>
+          <line x1="12" y1="12" x2="8" y2="17"/>
+        </svg>
+      </div>
+      <div class="dash-header-info">
+        <div class="dash-staff-name" id="headerName">Staff Member</div>
+        <div class="dash-staff-role" id="headerRole">Role · Sector</div>
+      </div>
+      <button class="notif-btn" id="notifBtn" aria-label="Notifications">
+        🔔
+        <span class="notif-dot" id="notifDot"></span>
+      </button>
+      <button class="signout-btn" id="signoutBtn" aria-label="Sign out">Sign Out</button>
+    </header>
+
+    <!-- Scrollable Content -->
+    <div class="dash-content" id="dashContent">
+
+      <!-- Hero welcome card -->
+      <div class="hero-card" id="heroCard">
+        <div class="hero-greeting" id="heroGreeting">Hello!</div>
+        <div class="hero-match" id="heroMatch">MetLife Stadium · Group A · Brazil vs Argentina</div>
+        <div class="hero-tags" id="heroTags">
+          <span class="hero-tag role-tag" id="roleTag">Role</span>
+          <span class="hero-tag" id="sectorTag">Sector</span>
+          <span class="hero-tag" id="matchTag">75'</span>
+        </div>
+      </div>
+
+      <!-- Language indicator -->
+      <div class="lang-strip" id="langStrip">
+        <span class="lang-flag" id="langFlag">🇺🇸</span>
+        <span class="lang-name" id="langName">English</span>
+        <span class="lang-change" onclick="showLangInfo()">Change language →</span>
+      </div>
+
+      <!-- Live sector status -->
+      <div class="sector-status-card" id="sectorCard">
+        <div class="sector-live-label">
+          <span class="pulse-dot"></span>
+          <span id="sectorLiveLabel">Your Sector — Live Status</span>
+        </div>
+        <div class="mini-gauges" id="miniGauges">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+
+      <!-- Task feed -->
+      <div id="taskSection">
+        <div class="section-header">
+          <span class="section-title" id="taskSectionTitle">Your Tasks</span>
+          <span class="section-badge" id="taskBadge">0</span>
+        </div>
+        <div id="taskFeed">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+
+      <!-- Emergency button -->
+      <button class="emergency-btn" id="emergencyBtn" aria-label="Trigger emergency alert">
+        🚨 <span id="emergencyLabel">Emergency — Report Incident</span>
+      </button>
+
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav" role="navigation" aria-label="App navigation">
+      <button class="nav-btn active" id="navTasks" onclick="switchNav('tasks')" aria-label="Tasks">
+        <span class="nav-icon">📋</span>
+        <span class="nav-label" id="navLabelTasks">Tasks</span>
+      </button>
+      <button class="nav-btn" id="navStatus" onclick="switchNav('status')" aria-label="Sector status">
+        <span class="nav-icon">📡</span>
+        <span class="nav-label" id="navLabelStatus">Status</span>
+      </button>
+      <button class="nav-btn" id="navHelp" onclick="switchNav('help')" aria-label="Help">
+        <span class="nav-icon">❓</span>
+        <span class="nav-label" id="navLabelHelp">Help</span>
+      </button>
+      <button class="nav-btn" id="navProfile" onclick="switchNav('profile')" aria-label="Profile">
+        <span class="nav-icon">👤</span>
+        <span class="nav-label" id="navLabelProfile">Profile</span>
+      </button>
+    </nav>
+
+  </div>
+
+</div>
+
+<!-- Scripts: load parent engine files via relative path -->
+<script src="../telemetry.js"></script>
+<script src="../engine.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════
+   ECOPULSE STAFF APP — Controller
+   GenAI-powered role-based alert + task system
+═══════════════════════════════════════════════════════════ */
+
+// ── MULTILINGUAL UI STRINGS ───────────────────────────────
+const LANG_STRINGS = {
+  en: {
+    greeting: "Hello", tasks: "Your Tasks", status: "Status",
+    help: "Help", profile: "Profile", emergency: "Emergency — Report Incident",
+    sectorLive: "Your Sector — Live Status",
+    noTasks: "✅ No active tasks for your role in this sector right now.",
+    markDone: "Done ✓", done: "Completed",
+    matchInfo: "MetLife Stadium · Group A · Brazil vs Argentina",
+    flags: { en:"🇺🇸", es:"🇲🇽", fr:"🇫🇷", de:"🇩🇪", pt:"🇧🇷", ar:"🇸🇦", zh:"🇨🇳" },
+    langNames: { en:"English", es:"Español", fr:"Français", de:"Deutsch", pt:"Português", ar:"العربية", zh:"中文" }
+  },
+  es: {
+    greeting: "Hola", tasks: "Tus Tareas", status: "Estado",
+    help: "Ayuda", profile: "Perfil", emergency: "Emergencia — Reportar Incidente",
+    sectorLive: "Tu Sector — Estado en Vivo",
+    noTasks: "✅ No hay tareas activas para tu rol en este sector ahora.",
+    markDone: "Listo ✓", done: "Completado",
+    matchInfo: "MetLife Stadium · Grupo A · Brasil vs Argentina",
+    flags: { en:"🇺🇸", es:"🇲🇽", fr:"🇫🇷", de:"🇩🇪", pt:"🇧🇷", ar:"🇸🇦", zh:"🇨🇳" },
+    langNames: { en:"English", es:"Español", fr:"Français", de:"Deutsch", pt:"Português", ar:"العربية", zh:"中文" }
+  },
+  fr: {
+    greeting: "Bonjour", tasks: "Vos Tâches", status: "Statut",
+    help: "Aide", profile: "Profil", emergency: "Urgence — Signaler Incident",
+    sectorLive: "Votre Secteur — Statut en Direct",
+    noTasks: "✅ Aucune tâche active pour votre rôle dans ce secteur.",
+    markDone: "Fait ✓", done: "Terminé",
+    matchInfo: "MetLife Stadium · Groupe A · Brésil vs Argentine",
+    flags: { en:"🇺🇸", es:"🇲🇽", fr:"🇫🇷", de:"🇩🇪", pt:"🇧🇷", ar:"🇸🇦", zh:"🇨🇳" },
+    langNames: { en:"English", es:"Español", fr:"Français", de:"Deutsch", pt:"Português", ar:"العربية", zh:"中文" }
+  },
+  de: {
+    greeting: "Hallo", tasks: "Ihre Aufgaben", status: "Status",
+    help: "Hilfe", profile: "Profil", emergency: "Notfall — Vorfall Melden",
+    sectorLive: "Ihr Sektor — Live-Status",
+    noTasks: "✅ Keine aktiven Aufgaben für Ihre Rolle in diesem Sektor.",
+    markDone: "Fertig ✓", done: "Abgeschlossen",
+    matchInfo: "MetLife Stadium · Gruppe A · Brasilien vs Argentinien",
+    flags: { en:"🇺🇸", es:"🇲🇽", fr:"🇫🇷", de:"🇩🇪", pt:"🇧🇷", ar:"🇸🇦", zh:"🇨🇳" },
+    langNames: { en:"English", es:"Español", fr:"Français", de:"Deutsch", pt:"Português", ar:"العربية", zh:"中文" }
+  },
+  pt: {
+    greeting: "Olá", tasks: "Suas Tarefas", status: "Status",
+    help: "Ajuda", profile: "Perfil", emergency: "Emergência — Relatar Incidente",
+    sectorLive: "Seu Setor — Status ao Vivo",
+    noTasks: "✅ Sem tarefas ativas para sua função neste setor.",
+    markDone: "Pronto ✓", done: "Concluído",
+    matchInfo: "MetLife Stadium · Grupo A · Brasil vs Argentina",
+    flags: { en:"🇺🇸", es:"🇲🇽", fr:"🇫🇷", de:"🇩🇪", pt:"🇧🇷", ar:"🇸🇦", zh:"🇨🇳" },
+    langNames: { en:"English", es:"Español", fr:"Français", de:"Deutsch", pt:"Português", ar:"العربية", zh:"中文" }
+  },
+  ar: {
+    greeting: "مرحباً", tasks: "مهامك", status: "الحالة",
+    help: "مساعدة", profile: "الملف", emergency: "طوارئ — الإبلاغ عن حادثة",
+    sectorLive: "قطاعك — الحالة المباشرة",
+    noTasks: "✅ لا توجد مهام نشطة لدورك في هذا القطاع الآن.",
+    markDone: "تم ✓", done: "مكتمل",
+    matchInfo: "ملعب ميتلايف · المجموعة أ · البرازيل ضد الأرجنتين",
+    flags: { en:"🇺🇸", es:"🇲🇽", fr:"🇫🇷", de:"🇩🇪", pt:"🇧🇷", ar:"🇸🇦", zh:"🇨🇳" },
+    langNames: { en:"English", es:"Español", fr:"Français", de:"Deutsch", pt:"Português", ar:"العربية", zh:"中文" }
+  },
+  zh: {
+    greeting: "你好", tasks: "您的任务", status: "状态",
+    help: "帮助", profile: "个人", emergency: "紧急情况 — 报告事件",
+    sectorLive: "您的区域 — 实时状态",
+    noTasks: "✅ 您的角色在该区域目前没有活动任务。",
+    markDone: "完成 ✓", done: "已完成",
+    matchInfo: "大都会人寿球场 · A组 · 巴西 vs 阿根廷",
+    flags: { en:"🇺🇸", es:"🇲🇽", fr:"🇫🇷", de:"🇩🇪", pt:"🇧🇷", ar:"🇸🇦", zh:"🇨🇳" },
+    langNames: { en:"English", es:"Español", fr:"Français", de:"Deutsch", pt:"Português", ar:"العربية", zh:"中文" }
+  }
+};
+
+// ── ROLE COLORS (applied to --accent CSS var) ─────────────
+const ROLE_COLORS = {
+  "Security Officer": "#2d9cff",
+  "Cleaning Crew":    "#00e87c",
+  "Medical Staff":    "#ff4444",
+  "Tech Support":     "#9b6dff",
+  "Event Volunteer":  "#ffab00"
+};
+
+// ── ROLE ALERT TYPE FILTER ────────────────────────────────
+const ROLE_TYPES = {
+  "Security Officer": ["crowd_surge","safety_block","egress_active","data_gap","temperature"],
+  "Cleaning Crew":    ["bin_overflow","bin_fill"],
+  "Medical Staff":    ["crowd_surge","temperature","egress_active"],
+  "Tech Support":     ["data_gap"],
+  "Event Volunteer":  ["crowd_surge","egress_active","bin_fill","temperature"]
+};
+
+// ── SCENARIO USED BY STAFF APP ────────────────────────────
+// Reads the current scenario from sessionStorage (set by authority dashboard)
+// or defaults to minute75.
+const ACTIVE_SCENARIO_ID = sessionStorage.getItem("ep_scenario") || "minute75";
+
+// ── APP STATE ─────────────────────────────────────────────
+let staff = null;
+let lang  = "en";
+let completedTasks = new Set();
+
+// ── ROLE ICONS ────────────────────────────────────────────
+const ROLE_ICONS = {
+  "Security Officer": "🛡️",
+  "Cleaning Crew":    "🧹",
+  "Medical Staff":    "🏥",
+  "Tech Support":     "💻",
+  "Event Volunteer":  "🌟"
+};
+
+const SECTOR_LABELS = {
+  north_concourse: "North Concourse",
+  south_concourse: "South Concourse",
+  east_concourse:  "East Concourse",
+  west_concourse:  "West Concourse",
+  pitch_zone:      "Pitch Zone",
+  all:             "All Areas"
+};
+
+// ── LOGIN HANDLER ─────────────────────────────────────────
+document.getElementById("loginForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const name   = document.getElementById("staffName").value.trim();
+  const id     = document.getElementById("staffId").value.trim();
+  const role   = document.getElementById("staffRole").value;
+  const sector = document.getElementById("staffSector").value;
+  lang         = document.getElementById("staffLang").value;
+
+  if (!name || !role || !sector) return;
+
+  staff = { name, id, role, sector };
+
+  // Apply role accent color
+  document.documentElement.style.setProperty("--accent", ROLE_COLORS[role] || "#00e87c");
+
+  // Persist login state
+  sessionStorage.setItem("ep_staff", JSON.stringify(staff));
+  sessionStorage.setItem("ep_lang", lang);
+
+  showDashboard();
+});
+
+// ── SHOW DASHBOARD ────────────────────────────────────────
+function showDashboard() {
+  const t = LANG_STRINGS[lang] || LANG_STRINGS.en;
+
+  document.getElementById("loginView").classList.remove("active");
+  document.getElementById("dashboardView").classList.add("active");
+
+  const scenario = getScenario(ACTIVE_SCENARIO_ID);
+  const result   = runEcoPulseEngine(scenario);
+
+  // Header
+  const firstName = staff.name.split(" ")[0];
+  document.getElementById("headerName").textContent = staff.name;
+  document.getElementById("headerRole").textContent = `${staff.role} · ${SECTOR_LABELS[staff.sector]}`;
+
+  // Hero card
+  document.getElementById("heroGreeting").textContent = `${t.greeting}, ${firstName}! ${ROLE_ICONS[staff.role] || "👋"}`;
+  document.getElementById("heroMatch").textContent = t.matchInfo;
+  document.getElementById("roleTag").textContent   = staff.role;
+  document.getElementById("sectorTag").textContent = SECTOR_LABELS[staff.sector] || staff.sector;
+  document.getElementById("matchTag").textContent  = scenario.matchMinute;
+
+  // Language strip
+  document.getElementById("langFlag").textContent = t.flags[lang] || "🌐";
+  document.getElementById("langName").textContent = t.langNames[lang] || lang;
+
+  // Nav labels
+  document.getElementById("navLabelTasks").textContent   = t.tasks;
+  document.getElementById("navLabelStatus").textContent  = t.status;
+  document.getElementById("navLabelHelp").textContent    = t.help;
+  document.getElementById("navLabelProfile").textContent = t.profile;
+
+  // Emergency button
+  document.getElementById("emergencyLabel").textContent  = t.emergency;
+
+  // Sector live label
+  document.getElementById("sectorLiveLabel").textContent = t.sectorLive;
+
+  // Task section title
+  document.getElementById("taskSectionTitle").textContent = t.tasks;
+
+  // Render sector gauges
+  renderSectorGauges(scenario, result);
+
+  // Render task feed
+  renderTaskFeed(result, t);
+
+  // Notif dot — show if any critical alerts exist
+  const hasCritical = result.alerts.some(a => a.priority === "critical");
+  document.getElementById("notifDot").style.display = hasCritical ? "block" : "none";
+}
+
+// ── SECTOR GAUGES ─────────────────────────────────────────
+function renderSectorGauges(scenario, result) {
+  const container = document.getElementById("miniGauges");
+  container.innerHTML = "";
+
+  // Determine which sector data to show
+  const sectorKey = staff.sector === "all" ? null : staff.sector;
+  const sectorsToShow = sectorKey
+    ? [scenario.sectors[sectorKey]].filter(Boolean)
+    : Object.values(scenario.sectors).slice(0, 4);
+
+  if (sectorsToShow.length === 0) {
+    container.innerHTML = `<div class="no-tasks">No sector data available.</div>`;
+    return;
+  }
+
+  // Adjust grid for "all" mode
+  if (staff.sector === "all") {
+    container.style.gridTemplateColumns = "repeat(2,1fr)";
+  } else {
+    container.style.gridTemplateColumns = "repeat(3,1fr)";
+  }
+
+  const metrics = [
+    { key: "crowdDensity", label: "Crowd",  fill: "#2d9cff", icon: "👥" },
+    { key: "binFillLevel", label: "Bins",   fill: "#ffab00", icon: "🗑️" },
+    { key: "hvacLoad",     label: "HVAC",   fill: "#00d4c8", icon: "❄️" }
+  ];
+
+  if (sectorKey) {
+    // Show 3 gauges for assigned sector
+    const s = sectorsToShow[0];
+    metrics.forEach(m => {
+      const val = s[m.key];
+      const gaugeEl = buildGauge(m.label, val, m.fill, m.icon, s.status === "stale");
+      container.appendChild(gaugeEl);
+    });
+  } else {
+    // Show crowd density for each of 4 sectors
+    sectorsToShow.forEach(s => {
+      const val = s.crowdDensity;
+      const name = s.label.replace(" Concourse","").replace(" Zone","");
+      const gaugeEl = buildGauge(name, val, "#2d9cff", "👥", s.status === "stale");
+      container.appendChild(gaugeEl);
+    });
+  }
+}
+
+function buildGauge(label, val, color, icon, stale) {
+  const el = document.createElement("div");
+  el.className = "mini-gauge";
+  const pct = val !== null ? val : 0;
+  const r = 22;
+  const circ = 2 * Math.PI * r;
+  const offset = circ - (pct / 100) * circ;
+
+  el.innerHTML = `
+    <div class="mini-gauge-label">${label}</div>
+    <svg class="mini-gauge-ring" viewBox="0 0 56 56">
+      <circle cx="28" cy="28" r="${r}" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="5"/>
+      <circle cx="28" cy="28" r="${r}" fill="none"
+        stroke="${stale ? "#ff4444" : color}" stroke-width="5"
+        stroke-linecap="round" stroke-dasharray="${circ}"
+        stroke-dashoffset="${stale ? circ : offset}"
+        transform="rotate(-90 28 28)"
+        style="filter:drop-shadow(0 0 4px ${stale ? "#ff4444" : color}80);transition:stroke-dashoffset 0.7s ease"/>
+      <text x="28" y="32" text-anchor="middle" font-size="12" font-family="JetBrains Mono,monospace" font-weight="700" fill="white">
+        ${stale ? "--" : (val !== null ? val+"%" : "--")}
+      </text>
+    </svg>
+    <div class="mini-gauge-value">${stale ? "⚠ STALE" : (val !== null ? pct+"%" : "N/A")}</div>
+  `;
+  return el;
+}
+
+// ── TASK FEED ─────────────────────────────────────────────
+function renderTaskFeed(result, t) {
+  const feed    = document.getElementById("taskFeed");
+  const badgeEl = document.getElementById("taskBadge");
+  feed.innerHTML = "";
+
+  const allowedTypes = ROLE_TYPES[staff.role] || [];
+  const sectorKey    = staff.sector === "all" ? null : staff.sector;
+
+  // Filter alerts to this role's concerns and optionally their sector
+  let tasks = result.alerts.filter(a => {
+    if (!allowedTypes.includes(a.type)) return false;
+    if (sectorKey && a.sectorId !== sectorKey.toUpperCase()) return false;
+    return true;
+  });
+
+  // If sector-filtered is empty and rover, show all role-relevant
+  if (tasks.length === 0 && sectorKey) {
+    tasks = result.alerts.filter(a => allowedTypes.includes(a.type));
+  }
+
+  // Also add role-specific routine tasks based on scenario
+  tasks = [...tasks, ...getRoutineTasks(result)];
+
+  badgeEl.textContent = tasks.length;
+  badgeEl.className   = "section-badge" + (tasks.some(a => a.priority === "critical") ? " red" : tasks.length > 0 ? " amber" : "");
+
+  if (tasks.length === 0) {
+    feed.innerHTML = `<div class="no-tasks">${t.noTasks}</div>`;
+    return;
+  }
+
+  tasks.forEach((task, i) => {
+    const id       = "task_" + i;
+    const isDone   = completedTasks.has(id);
+    const prioMap  = { critical: "tp-critical", warning: "tp-warn", info: "tp-info" };
+    const prioLbl  = { critical: "CRITICAL", warning: "WARNING", info: "INFO" };
+    const now      = new Date();
+    const timeStr  = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+    const card = document.createElement("div");
+    card.className = `task-card ${task.priority}${isDone ? " done" : ""}`;
+    card.style.animationDelay = `${i * 0.07}s`;
+    card.id = "card_" + i;
+
+    card.innerHTML = `
+      <span class="task-icon">${task.icon || "📋"}</span>
+      <div class="task-body">
+        <div class="task-sector">[${task.sectorId || "ALL"}]</div>
+        <div class="task-msg">${translateTask(task.message, task.type)}</div>
+        <div class="task-time">Received ${timeStr} · Match: ${getScenario(ACTIVE_SCENARIO_ID).matchMinute}</div>
+        <div class="task-footer">
+          <span class="task-priority ${prioMap[task.priority] || "tp-info"}">${prioLbl[task.priority] || "INFO"}</span>
+          <button class="task-done-btn ${isDone ? 'done-state' : ''}"
+                  onclick="markDone('${id}', 'card_${i}')"
+                  aria-label="Mark task as done"
+                  ${isDone ? "disabled" : ""}>
+            ${isDone ? (t.done || "Completed") : (t.markDone || "Done ✓")}
+          </button>
+        </div>
+      </div>
+    `;
+    feed.appendChild(card);
+  });
+}
+
+// ── ROUTINE TASKS by role ─────────────────────────────────
+function getRoutineTasks(result) {
+  const scenario = getScenario(ACTIVE_SCENARIO_ID);
+  const min = scenario.matchMinuteNumeric;
+  const extras = [];
+
+  if (staff.role === "Cleaning Crew") {
+    extras.push({
+      priority: "info", type: "routine", sectorId: "ALL_SECTORS",
+      message: "Run pre-egress bin count and confirm all collection bags restocked before final whistle.",
+      icon: "🧹"
+    });
+  }
+
+  if (staff.role === "Security Officer") {
+    extras.push({
+      priority: "info", type: "routine", sectorId: "ALL_GATES",
+      message: "Verify emergency exit signage is illuminated and unobstructed in assigned zone.",
+      icon: "🛡️"
+    });
+    if (min >= 75) {
+      extras.push({
+        priority: "warning", type: "crowd_surge", sectorId: "NORTH_CONCOURSE",
+        message: "Begin post-match crowd flow briefing with adjacent gate supervisors. Coordinate staggered egress.",
+        icon: "👥"
+      });
+    }
+  }
+
+  if (staff.role === "Medical Staff") {
+    extras.push({
+      priority: "info", type: "routine", sectorId: "MED_STATION",
+      message: "Confirm first aid station inventory — rehydration packs, heat-related treatment supplies.",
+      icon: "🏥"
+    });
+  }
+
+  if (staff.role === "Tech Support") {
+    extras.push({
+      priority: "info", type: "routine", sectorId: "TECH_HUB",
+      message: "Run sensor health check — confirm all IoT node heartbeats are within the 5-minute threshold.",
+      icon: "💻"
+    });
+  }
+
+  if (staff.role === "Event Volunteer") {
+    extras.push({
+      priority: "info", type: "routine", sectorId: "ALL_AREAS",
+      message: "Check on spectators needing wayfinding assistance. Direct visitors to nearest accessible exits.",
+      icon: "🌟"
+    });
+    extras.push({
+      priority: "info", type: "routine", sectorId: "INFO_DESK",
+      message: "Multi-language info desk coverage required — Spanish, Portuguese, Arabic support needed.",
+      icon: "🌐"
+    });
+  }
+
+  return extras;
+}
+
+// ── TRANSLATE TASK MESSAGE (stub — shows how production would work) ──
+function translateTask(message, type) {
+  // In production: pipe through Gemini translation with the lang code
+  // For demo: message is in English; flag non-English users with a note
+  if (lang !== "en") {
+    // Add a subtle translated note for demo purposes
+    return message;
+  }
+  return message;
+}
+
+// ── MARK TASK DONE ────────────────────────────────────────
+function markDone(taskId, cardId) {
+  completedTasks.add(taskId);
+  const card = document.getElementById(cardId);
+  if (card) {
+    card.classList.add("done");
+    const btn = card.querySelector(".task-done-btn");
+    if (btn) { btn.textContent = "Completed"; btn.classList.add("done-state"); btn.disabled = true; }
+  }
+}
+
+// ── NAV SWITCH ────────────────────────────────────────────
+function switchNav(tab) {
+  ["tasks","status","help","profile"].forEach(t => {
+    document.getElementById("nav" + t.charAt(0).toUpperCase() + t.slice(1)).classList.remove("active");
+  });
+  document.getElementById("nav" + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add("active");
+
+  const feed = document.getElementById("taskFeed");
+  const sCard = document.getElementById("sectorCard");
+
+  if (tab === "tasks") {
+    feed.style.display   = "flex";
+    sCard.style.display  = "block";
+    document.getElementById("taskSection").style.display = "block";
+    document.getElementById("heroCard").style.display    = "block";
+    document.getElementById("langStrip").style.display   = "flex";
+  } else if (tab === "status") {
+    const content = `
+      <div class="hero-card" style="background:rgba(45,156,255,0.08);border-color:rgba(45,156,255,0.3);">
+        <div class="hero-greeting" style="font-size:1rem;">📡 System Status</div>
+        <div class="hero-match">EcoPulse reasoning engine active · Scenario: ${getScenario(ACTIVE_SCENARIO_ID).label}</div>
+        <div class="hero-tags">
+          <span class="hero-tag" style="background:rgba(0,232,124,0.15);color:#00e87c;border-color:rgba(0,232,124,0.3);">🟢 Engine Online</span>
+          <span class="hero-tag">5 Sectors Monitored</span>
+          <span class="hero-tag">IoT Active</span>
+        </div>
+      </div>
+      <div class="sector-status-card">
+        <div class="sector-live-label"><span class="pulse-dot"></span> All Sectors — Overview</div>
+        <div style="display:grid;gap:8px;margin-top:4px;">
+          ${Object.values(getScenario(ACTIVE_SCENARIO_ID).sectors).map(s =>
+            `<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:8px;">
+              <span style="font-size:0.75rem;font-weight:700;flex:1;color:var(--text-sub);">${s.label}</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--mono);">${s.crowdDensity !== null ? s.crowdDensity+'%' : '--'} crowd</span>
+              <span style="width:8px;height:8px;border-radius:50%;background:${s.status==='stale'?'#ff4444':s.crowdDensity>70?'#ffab00':'#00e87c'};box-shadow:0 0 6px ${s.status==='stale'?'#ff4444':s.crowdDensity>70?'#ffab00':'#00e87c'};flex-shrink:0;"></span>
+            </div>`
+          ).join("")}
+        </div>
+      </div>
+    `;
+    document.getElementById("dashContent").innerHTML = content + emergencyBtnHTML();
+  } else if (tab === "help") {
+    document.getElementById("dashContent").innerHTML = helpContent();
+  } else if (tab === "profile") {
+    document.getElementById("dashContent").innerHTML = profileContent();
+  }
+}
+
+function emergencyBtnHTML() {
+  const t = LANG_STRINGS[lang] || LANG_STRINGS.en;
+  return `<button class="emergency-btn" onclick="triggerEmergency()">🚨 ${t.emergency}</button>`;
+}
+
+function helpContent() {
+  return `
+    <div class="hero-card" style="background:rgba(155,109,255,0.08);border-color:rgba(155,109,255,0.3);">
+      <div class="hero-greeting" style="font-size:1rem;">❓ Help & Protocols</div>
+      <div class="hero-match">Quick reference for ${staff ? staff.role : "staff"}</div>
+    </div>
+    ${[
+      ["🚨","Emergency Procedure","Tap the red Emergency button at the bottom of any screen to alert supervisors immediately. State your sector and incident type clearly."],
+      ["🗑️","Bin Overflow Protocol","When bins show ≥90% fill: empty immediately, do not wait for scheduled pickup. Report completion via the Tasks tab."],
+      ["👥","Crowd Surge Response","If density exceeds 90%: stop inflow, open adjacent gates, and alert your supervisor. Do not attempt solo crowd control."],
+      ["❄️","HVAC Safety Rule","Never manually override cooling in active or egress zones. System safety rules prevent this — escalate to Tech Support if overrides are needed."],
+      ["📡","Data Gap Alert","If your sector shows a DATA GAP alert, conduct manual inspection immediately and report sensor status to Tech Support."],
+      ["🌐","Language Support","Translation earpieces available at all info desks. RapidSOS emergency line supports 50 languages — tell dispatcher your language first."]
+    ].map(([icon, title, desc]) => `
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;gap:12px;">
+        <span style="font-size:1.3rem;flex-shrink:0;">${icon}</span>
+        <div>
+          <div style="font-size:0.8rem;font-weight:700;margin-bottom:4px;">${title}</div>
+          <div style="font-size:0.73rem;color:var(--text-sub);line-height:1.5;">${desc}</div>
+        </div>
+      </div>
+    `).join("")}
+    ${emergencyBtnHTML()}
+  `;
+}
+
+function profileContent() {
+  if (!staff) return "<div class='no-tasks'>Not signed in.</div>";
+  const t = LANG_STRINGS[lang] || LANG_STRINGS.en;
+  return `
+    <div class="hero-card">
+      <div class="hero-greeting" style="font-size:1.1rem;">${ROLE_ICONS[staff.role] || "👤"} ${staff.name}</div>
+      <div class="hero-match">${staff.role} · ${SECTOR_LABELS[staff.sector]}</div>
+      <div class="hero-tags">
+        <span class="hero-tag" style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;">${staff.id}</span>
+        <span class="hero-tag">${t.flags[lang]} ${t.langNames[lang]}</span>
+      </div>
+    </div>
+    ${[
+      ["👤","Name", staff.name],
+      ["🪪","Staff ID", staff.id],
+      ["🎯","Role", staff.role],
+      ["📍","Sector", SECTOR_LABELS[staff.sector]],
+      ["🌐","Language", t.langNames[lang]],
+      ["🏟️","Venue", "MetLife Stadium · NJ"],
+      ["📅","Match", "Group A · Brazil vs Argentina"],
+      ["🛡️","Safety Rule", "Active — Always enforced"]
+    ].map(([icon, label, val]) => `
+      <div style="display:flex;align-items:center;gap:12px;padding:11px 14px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;">
+        <span style="font-size:1rem;flex-shrink:0;">${icon}</span>
+        <span style="font-size:0.72rem;color:var(--text-sub);width:90px;flex-shrink:0;">${label}</span>
+        <span style="font-size:0.8rem;font-weight:600;">${val}</span>
+      </div>
+    `).join("")}
+    <button class="signout-btn" style="width:100%;padding:13px;border-radius:10px;font-size:0.85rem;"
+            onclick="signOut()">Sign Out of Shift</button>
+    <div style="text-align:center;font-size:0.62rem;color:var(--text-muted);margin-top:8px;">
+      EcoPulse Stadium v1.0 · FIFA World Cup 2026
+    </div>
+  `;
+}
+
+// ── SIGN OUT ──────────────────────────────────────────────
+function signOut() {
+  staff = null;
+  completedTasks.clear();
+  sessionStorage.removeItem("ep_staff");
+  sessionStorage.removeItem("ep_lang");
+  document.documentElement.style.setProperty("--accent", "#00e87c");
+  document.getElementById("dashboardView").classList.remove("active");
+  document.getElementById("loginView").classList.add("active");
+  switchNav("tasks");
+}
+
+document.getElementById("signoutBtn").addEventListener("click", signOut);
+
+// ── EMERGENCY TRIGGER ─────────────────────────────────────
+document.getElementById("emergencyBtn").addEventListener("click", triggerEmergency);
+
+function triggerEmergency() {
+  alert(`🚨 EMERGENCY ALERT SENT\n\nStaff: ${staff ? staff.name : "Unknown"}\nID: ${staff ? staff.id : "--"}\nSector: ${staff ? SECTOR_LABELS[staff.sector] : "--"}\nRole: ${staff ? staff.role : "--"}\n\nEmergency services and supervisors have been notified.\n\nIn a live system, this triggers RapidSOS integration with GPS coordinates and real-time translation for first responders.`);
+}
+
+// ── LANG INFO ─────────────────────────────────────────────
+function showLangInfo() {
+  const langs = { en:"🇺🇸 English", es:"🇲🇽 Español", fr:"🇫🇷 Français", de:"🇩🇪 Deutsch", pt:"🇧🇷 Português", ar:"🇸🇦 العربية", zh:"🇨🇳 中文" };
+  const selected = prompt("Language codes: " + Object.entries(langs).map(([k,v]) => k+": "+v).join(" | ") + "\n\nEnter code:", lang);
+  if (selected && LANG_STRINGS[selected]) {
+    lang = selected;
+    sessionStorage.setItem("ep_lang", lang);
+    showDashboard();
+  }
+}
+
+// ── AUTO-RESTORE SESSION ──────────────────────────────────
+const savedStaff = sessionStorage.getItem("ep_staff");
+const savedLang  = sessionStorage.getItem("ep_lang");
+if (savedStaff) {
+  try {
+    staff = JSON.parse(savedStaff);
+    lang  = savedLang || "en";
+    document.getElementById("staffRole").value   = staff.role;
+    document.getElementById("staffSector").value = staff.sector;
+    document.documentElement.style.setProperty("--accent", ROLE_COLORS[staff.role] || "#00e87c");
+    showDashboard();
+  } catch(e) { /* fresh start */ }
+}
+</script>
+</body>
+</html>

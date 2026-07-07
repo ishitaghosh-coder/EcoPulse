@@ -1,0 +1,67 @@
+{
+  "_comment": "EcoPulse Stadium — Sample Telemetry Snapshot. Represents a single sensor poll cycle at the 75th minute of Group A match at MetLife Stadium. In production, replace with real-time WebSocket or REST feed from venue IoT middleware.",
+  "scenario": "minute75",
+  "matchMinute": "75'",
+  "venue": "MetLife Stadium",
+  "city": "New York / New Jersey",
+  "match": "Group A — Brazil vs Argentina",
+  "timestamp": "2026-07-15T21:15:00Z",
+  "sectors": {
+    "north_concourse": {
+      "crowdDensity": 90,
+      "binFillLevel": 85,
+      "hvacLoad": 100,
+      "lightingLevel": 100,
+      "temperature": 30.2,
+      "isEgressActive": false,
+      "lastUpdated": "2026-07-15T21:14:55Z",
+      "status": "active"
+    },
+    "south_concourse": {
+      "crowdDensity": 10,
+      "binFillLevel": 15,
+      "hvacLoad": 100,
+      "lightingLevel": 100,
+      "temperature": 22.1,
+      "isEgressActive": false,
+      "lastUpdated": "2026-07-15T21:14:58Z",
+      "status": "active",
+      "_waste_flag": "HVAC at 100% with only 10% crowd density — primary energy waste event"
+    },
+    "east_concourse": {
+      "crowdDensity": 65,
+      "binFillLevel": 60,
+      "hvacLoad": 85,
+      "lightingLevel": 100,
+      "temperature": 27.5,
+      "isEgressActive": false,
+      "lastUpdated": "2026-07-15T21:14:50Z",
+      "status": "active"
+    },
+    "west_concourse": {
+      "crowdDensity": 55,
+      "binFillLevel": 45,
+      "hvacLoad": 80,
+      "lightingLevel": 100,
+      "temperature": 26.3,
+      "isEgressActive": false,
+      "lastUpdated": "2026-07-15T21:14:55Z",
+      "status": "active"
+    },
+    "pitch_zone": {
+      "crowdDensity": null,
+      "binFillLevel": null,
+      "hvacLoad": 90,
+      "lightingLevel": 100,
+      "temperature": 23.0,
+      "isEgressActive": false,
+      "lastUpdated": "2026-07-15T21:14:58Z",
+      "status": "active"
+    }
+  },
+  "engine_output_shape": {
+    "block_1": "ORGANIZER SUSTAINABILITY METRICS — per-sector efficiency, waste flags, DATA GAP notices, overall score",
+    "block_2": "GROUND STAFF ACTIONS & ALERTS — push-notification style, priority ordered (safety > overflow > routine)",
+    "block_3": "AUTOMATED UTILITY COMMANDS — HVAC/lighting adjustments approved or BLOCKED by safety rule"
+  }
+}

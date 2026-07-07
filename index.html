@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoPulse Stadium — GenAI Sustainability & Operations Engine · FIFA World Cup 2026</title>
+  <meta name="description" content="EcoPulse Stadium is a GenAI-powered real-time sustainability and operations reasoning engine for FIFA World Cup 2026 stadiums. It ingests live telemetry and produces synchronized organizer metrics, staff alerts, and automated utility commands with a hard-coded safety-first priority rule." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="EcoPulse Stadium · FIFA World Cup 2026" />
+  <meta property="og:description" content="GenAI reasoning engine for stadium sustainability and operations. Safety-first. Sense → Reason → Act." />
+  <meta property="og:type" content="website" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════
+       PORTAL NAV BAR — links to all three EcoPulse portals
+  ═══════════════════════════════════════════════════════ -->
+  <div style="
+    position:sticky; top:0; z-index:200;
+    background:rgba(4,8,18,0.97);
+    backdrop-filter:blur(20px);
+    border-bottom:1px solid rgba(0,232,124,0.2);
+    padding:8px 28px;
+    display:flex; align-items:center; gap:12px;
+    font-family:'Outfit',sans-serif;
+  ">
+    <span style="font-size:0.62rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#4a5578;">EcoPulse Portals</span>
+    <div style="flex:1;height:1px;background:rgba(255,255,255,0.06);"></div>
+
+    <a href="index.html" style="
+      padding:5px 14px; border-radius:100px;
+      background:rgba(0,232,124,0.15); border:1px solid rgba(0,232,124,0.35);
+      font-size:0.72rem; font-weight:700; color:#00e87c;
+      text-decoration:none; letter-spacing:0.04em;
+      display:flex; align-items:center; gap:6px;
+    ">⚡ Ops Engine</a>
+
+    <a href="authority-dashboard/index.html" style="
+      padding:5px 14px; border-radius:100px;
+      background:rgba(45,156,255,0.12); border:1px solid rgba(45,156,255,0.28);
+      font-size:0.72rem; font-weight:700; color:#2d9cff;
+      text-decoration:none; letter-spacing:0.04em;
+      display:flex; align-items:center; gap:6px;
+    ">🏟️ Authority Dashboard</a>
+
+    <a href="staff-app/index.html" style="
+      padding:5px 14px; border-radius:100px;
+      background:rgba(155,109,255,0.12); border:1px solid rgba(155,109,255,0.28);
+      font-size:0.72rem; font-weight:700; color:#9b6dff;
+      text-decoration:none; letter-spacing:0.04em;
+      display:flex; align-items:center; gap:6px;
+    ">👷 Staff App</a>
+
+    <div style="height:1px;background:rgba(255,255,255,0.06);flex:1;"></div>
+    <span style="font-size:0.6rem;color:#4a5578;font-family:'JetBrains Mono',monospace;">FIFA WC 2026</span>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       HEADER
+  ═══════════════════════════════════════════════════════ -->
+  <header class="app-header" role="banner">
+
+    <!-- Left: Logo + Venue -->
+    <div class="header-left">
+      <a href="#" class="logo" aria-label="EcoPulse Stadium home">
+        <div class="logo-icon" aria-hidden="true">
+          <!-- Leaf/pulse SVG icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="#050810" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22V12"/>
+            <path d="M5 3s.55 7.07 3.5 9.5S17 14 17 14"/>
+            <path d="M19 3s-.55 7.07-3.5 9.5S7 14 7 14"/>
+            <line x1="12" y1="12" x2="8" y2="17"/>
+          </svg>
+        </div>
+        <span class="logo-text">EcoPulse<span>Stadium</span></span>
+      </a>
+      <div class="venue-pill" id="venuePill" aria-label="Current venue">MetLife Stadium · New York / New Jersey</div>
+    </div>
+
+    <!-- Center: Match Clock + Efficiency Ring -->
+    <div class="header-center" role="region" aria-label="Match status">
+      <div class="match-clock" aria-live="polite" aria-label="Match time">
+        <div class="clock-label">Match Time</div>
+        <div id="matchClock" aria-live="polite">75'</div>
+      </div>
+
+      <div class="score-ring-wrapper" role="img" aria-label="Sustainability efficiency score" aria-describedby="scoreDesc">
+        <svg class="score-ring-svg" viewBox="0 0 76 76" aria-hidden="true">
+          <circle class="score-ring-bg" cx="38" cy="38" r="32"/>
+          <circle class="score-ring-fill" id="scoreRingFill" cx="38" cy="38" r="32"/>
+        </svg>
+        <div class="score-ring-text">
+          <div class="score-value" id="scoreRingValue">--</div>
+          <div class="score-label">SCORE</div>
+        </div>
+      </div>
+      <span id="scoreDesc" class="hidden">Sustainability Efficiency Score out of 100</span>
+    </div>
+
+    <!-- Right: Status badges -->
+    <div class="header-right">
+      <div class="live-badge" aria-label="System status: live monitoring active">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        Live Monitoring
+      </div>
+      <div class="safety-badge" title="Fan and staff safety always overrides sustainability optimization" aria-label="Safety priority rule is active">
+        🛡️ Safety Rule Active
+      </div>
+    </div>
+
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SCENARIO CONTROLS
+  ═══════════════════════════════════════════════════════ -->
+  <div class="controls-bar" role="navigation" aria-label="Scenario selection">
+    <span class="controls-label">Scenario →</span>
+
+    <div class="scenario-tabs" role="tablist" aria-label="Match scenarios">
+      <button class="scenario-tab"
+              data-scenario="prematch"
+              role="tab"
+              aria-selected="false"
+              id="tab-prematch"
+              aria-controls="output-panel">
+        ⚽ Pre-Match
+      </button>
+      <button class="scenario-tab active"
+              data-scenario="minute75"
+              role="tab"
+              aria-selected="true"
+              id="tab-minute75"
+              aria-controls="output-panel">
+        🔥 75th Minute
+      </button>
+      <button class="scenario-tab"
+              data-scenario="postmatch"
+              role="tab"
+              aria-selected="false"
+              id="tab-postmatch"
+              aria-controls="output-panel">
+        🚪 Post-Match Egress
+      </button>
+      <button class="scenario-tab"
+              data-scenario="datagap"
+              role="tab"
+              aria-selected="false"
+              id="tab-datagap"
+              aria-controls="output-panel">
+        📡 Data Gap
+      </button>
+    </div>
+
+    <div class="scenario-desc" id="scenarioDesc" aria-live="polite" role="status">
+      Match at 75 minutes. North Concourse near capacity. South Concourse near-empty — HVAC still at 100%.
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       MAIN CONTENT
+  ═══════════════════════════════════════════════════════ -->
+  <main class="main-content" role="main" id="output-panel">
+
+    <!-- ── LIVE TELEMETRY SECTOR CARDS ─────────────────── -->
+    <section aria-labelledby="telemetryHeading">
+      <h1 id="telemetryHeading" class="hidden">Live Stadium Sector Telemetry</h1>
+      <div class="sector-grid" id="sectorGrid" role="list" aria-label="Live sector telemetry">
+        <!-- Injected by JS -->
+      </div>
+    </section>
+
+    <!-- ── THREE OUTPUT PANELS ────────────────────────── -->
+    <div class="output-grid" id="outputGrid">
+
+      <!-- PANEL 1: Organizer Sustainability Metrics -->
+      <article class="output-panel organizer-panel" aria-labelledby="organizerTitle">
+        <div class="panel-header">
+          <span class="panel-icon" aria-hidden="true">📊</span>
+          <h2 class="panel-title" id="organizerTitle">Organizer Sustainability Metrics</h2>
+          <div class="panel-badge badge-green" id="organizerBadge" aria-live="polite">Score: --</div>
+        </div>
+        <div class="panel-content" id="organizerContent" role="region" aria-label="Sustainability metrics by sector">
+          <div class="empty-state">Loading telemetry...</div>
+        </div>
+      </article>
+
+      <!-- PANEL 2: Ground Staff Alerts -->
+      <article class="output-panel alerts-panel" aria-labelledby="alertsTitle">
+        <div class="panel-header">
+          <span class="panel-icon" aria-hidden="true">🔔</span>
+          <h2 class="panel-title" id="alertsTitle">Ground Staff Actions & Alerts</h2>
+          <div class="panel-badge" id="alertsBadge" aria-live="polite">0 alerts</div>
+        </div>
+        <div class="panel-content" id="alertsContent" role="log" aria-live="polite" aria-label="Staff alerts feed">
+          <div class="empty-state">Loading alerts...</div>
+        </div>
+      </article>
+
+      <!-- PANEL 3: Automated Utility Commands -->
+      <article class="output-panel utility-panel" aria-labelledby="utilityTitle">
+        <div class="panel-header">
+          <span class="panel-icon" aria-hidden="true">⚡</span>
+          <h2 class="panel-title" id="utilityTitle">Automated Utility Commands</h2>
+          <div class="panel-badge badge-blue" id="utilityBadge" aria-live="polite">Computing...</div>
+        </div>
+        <div class="panel-content" id="utilityContent" role="region" aria-label="Automated utility adjustment commands">
+          <div class="empty-state">Loading commands...</div>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════════════════ -->
+  <footer class="app-footer" role="contentinfo">
+    <div class="footer-rule">
+      🛡️ SAFETY PRIORITY RULE ENFORCED — Fan &amp; staff safety always overrides sustainability optimizations.
+      Egress zones and active crowd zones are never throttled.
+    </div>
+    <div class="footer-meta">
+      EcoPulse Stadium v1.0 &nbsp;·&nbsp; FIFA World Cup 2026 &nbsp;·&nbsp;
+      Reasoning engine: rule-logic mirror of LLM system prompt — designed to swap for live Antigravity/Gemini API in production.
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SCRIPTS
+  ═══════════════════════════════════════════════════════ -->
+  <script src="telemetry.js"></script>
+  <script src="engine.js"></script>
+  <script>
+    /* ───────────────────────────────────────────────────────
+       DASHBOARD CONTROLLER
+       Wires scenario tabs → engine → three output panels
+    ─────────────────────────────────────────────────────── */
+
+    let currentScenarioId = "minute75";
+
+    // ── SCENARIO TAB SWITCHING ──────────────────────────
+    document.querySelectorAll(".scenario-tab").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".scenario-tab").forEach(b => {
+          b.classList.remove("active");
+          b.setAttribute("aria-selected", "false");
+        });
+        btn.classList.add("active");
+        btn.setAttribute("aria-selected", "true");
+        currentScenarioId = btn.dataset.scenario;
+        renderDashboard(currentScenarioId);
+      });
+    });
+
+    // ── MAIN RENDER FUNCTION ────────────────────────────
+    function renderDashboard(scenarioId) {
+      const scenario = getScenario(scenarioId);
+      const result   = runEcoPulseEngine(scenario);
+
+      updateHeader(result);
+      renderSectorGrid(result, scenario);
+      renderOrganizerPanel(result);
+      renderAlertsPanel(result);
+      renderUtilityPanel(result);
+    }
+
+    // ── HEADER UPDATE ───────────────────────────────────
+    function updateHeader(result) {
+      const score = result.score;
+
+      // Match clock
+      document.getElementById("matchClock").textContent = result.scenario.matchMinute;
+
+      // Venue pill
+      document.getElementById("venuePill").textContent = result.scenario.venue;
+
+      // Scenario description
+      document.getElementById("scenarioDesc").textContent = result.scenario.description;
+
+      // Score ring
+      const circumference = 2 * Math.PI * 32; // r=32
+      const offset = circumference - (score / 100) * circumference;
+      const ring = document.getElementById("scoreRingFill");
+      ring.style.strokeDasharray = circumference;
+      ring.style.strokeDashoffset = offset;
+
+      // Color the ring based on score
+      if (score >= 70) {
+        ring.style.stroke = "var(--green)";
+        ring.style.filter = "drop-shadow(0 0 6px var(--green))";
+      } else if (score >= 50) {
+        ring.style.stroke = "var(--amber)";
+        ring.style.filter = "drop-shadow(0 0 6px var(--amber))";
+      } else {
+        ring.style.stroke = "var(--red)";
+        ring.style.filter = "drop-shadow(0 0 6px var(--red))";
+      }
+
+      // Score value text
+      const scoreEl = document.getElementById("scoreRingValue");
+      scoreEl.textContent = score;
+      scoreEl.className = "score-value " + (score >= 70 ? "score-high" : score >= 50 ? "score-mid" : "score-low");
+    }
+
+    // ── SECTOR GRID ─────────────────────────────────────
+    function renderSectorGrid(result, scenario) {
+      const grid = document.getElementById("sectorGrid");
+      grid.innerHTML = "";
+
+      const sectorSummaries = result.metrics.sectorSummaries;
+
+      sectorSummaries.forEach(sector => {
+        const statusClass = sector.status; // active | egress | low_density | data_gap
+        const effColor = sector.efficiency >= 70 ? "var(--green)"
+                       : sector.efficiency >= 50 ? "var(--amber)" : "var(--red)";
+
+        const isDataGap = sector.status === "data_gap";
+
+        const crowdVal  = sector.crowdDensity !== null ? sector.crowdDensity + "%" : "--";
+        const binVal    = sector.binFillLevel  !== null ? sector.binFillLevel  + "%" : "--";
+        const hvacVal   = sector.hvacLoad      !== null ? sector.hvacLoad      + "%" : "--";
+        const lightVal  = sector.lightingLevel !== null ? sector.lightingLevel + "%" : "--";
+        const tempVal   = sector.temperature   !== null ? sector.temperature.toFixed(1) + "°C" : "--";
+
+        const binClass = (sector.binFillLevel >= 90) ? "bin critical" : "bin";
+
+        let tagHtml = "";
+        if (isDataGap) {
+          tagHtml = `<span class="sector-tag tag-datagap">⚠ DATA GAP</span>`;
+        } else if (sector.isEgressActive) {
+          tagHtml = `<span class="sector-tag tag-egress">🚪 EGRESS ACTIVE</span>`;
+        } else if (sector.status === "low_density") {
+          tagHtml = `<span class="sector-tag tag-low">Low Density</span>`;
+        } else {
+          tagHtml = `<span class="sector-tag tag-active">Active</span>`;
+        }
+
+        const card = document.createElement("div");
+        card.className = "sector-card " + statusClass;
+        card.setAttribute("role", "listitem");
+        card.setAttribute("aria-label", sector.label + " sector telemetry");
+        card.innerHTML = `
+          <div class="sector-name">
+            ${sector.label.replace(" Concourse","").replace(" Zone","")}
+            <span class="sector-status-dot" aria-hidden="true"></span>
+          </div>
+          ${isDataGap ? `
+          <div class="metric-row">
+            <span class="metric-label" style="color:var(--red);font-weight:700;">⚠️ SENSOR OFFLINE</span>
+          </div>
+          ` : `
+          <div class="metric-row">
+            <span class="metric-label">Crowd</span>
+            <div class="gauge-bar" aria-hidden="true"><div class="gauge-fill crowd" style="width:${sector.crowdDensity ?? 0}%"></div></div>
+            <span class="metric-value ${sector.crowdDensity === null ? 'na' : ''}">${crowdVal}</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-label">Bins</span>
+            <div class="gauge-bar" aria-hidden="true"><div class="gauge-fill ${binClass}" style="width:${sector.binFillLevel ?? 0}%"></div></div>
+            <span class="metric-value ${sector.binFillLevel === null ? 'na' : ''}">${binVal}</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-label">HVAC</span>
+            <div class="gauge-bar" aria-hidden="true"><div class="gauge-fill hvac" style="width:${sector.hvacLoad ?? 0}%"></div></div>
+            <span class="metric-value">${hvacVal}</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-label">Light</span>
+            <div class="gauge-bar" aria-hidden="true"><div class="gauge-fill light" style="width:${sector.lightingLevel ?? 0}%"></div></div>
+            <span class="metric-value">${lightVal}</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-label">Temp</span>
+            <span class="metric-value">${tempVal}</span>
+          </div>
+          `}
+          ${tagHtml}
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // ── ORGANIZER METRICS PANEL ─────────────────────────
+    function renderOrganizerPanel(result) {
+      const el      = document.getElementById("organizerContent");
+      const badge   = document.getElementById("organizerBadge");
+      const score   = result.score;
+      const metrics = result.metrics;
+      let html = "";
+
+      // Score summary card (top)
+      const scoreColor = score >= 70 ? "var(--green)" : score >= 50 ? "var(--amber)" : "var(--red)";
+      const scoreBadgeClass = score >= 70 ? "badge-green" : score >= 50 ? "badge-amber" : "badge-red";
+      badge.textContent = "Score: " + score;
+      badge.className = "panel-badge " + scoreBadgeClass;
+
+      let wasteDesc = "";
+      if (metrics.wasteEvents.length > 0) {
+        const names = metrics.wasteEvents.map(w => w.label).join(", ");
+        wasteDesc = `Energy waste detected: ${names}`;
+      }
+      if (metrics.dataGaps.length > 0) {
+        const names = metrics.dataGaps.map(g => g.label).join(", ");
+        wasteDesc += (wasteDesc ? " · " : "") + `DATA GAP: ${names}`;
+      }
+      if (!wasteDesc) wasteDesc = "All sectors within target parameters";
+
+      html += `
+        <div class="score-summary">
+          <div class="score-summary-number" style="color:${scoreColor}">${score}</div>
+          <div class="score-summary-detail">
+            <div class="score-summary-label">Sustainability Efficiency Score</div>
+            <div class="score-summary-sub">${wasteDesc}</div>
+          </div>
+        </div>
+      `;
+
+      // DATA GAP flags (priority — top of list)
+      metrics.dataGaps.forEach(gap => {
+        html += `
+          <div class="metric-card datagap">
+            <div class="metric-sector-header">
+              <span class="metric-sector-name">⚠️ DATA GAP — ${gap.label}</span>
+              <span class="metric-sector-eff" style="color:var(--red)">⛔</span>
+            </div>
+            <div class="metric-note gap-note">${gap.reason}</div>
+            <div class="metric-note" style="color:var(--text-muted);font-family:'JetBrains Mono',monospace;font-size:0.65rem;">
+              Last seen: ${formatTimestamp(gap.lastSeen)}
+            </div>
+            <div class="metric-note gap-note" style="font-size:0.67rem;">
+              All automated commands for this sector defaulted to MAINTAIN CURRENT SETTINGS.
+            </div>
+          </div>
+        `;
+      });
+
+      // Safety blocks summary
+      if (metrics.safetyBlocks.length > 0) {
+        metrics.safetyBlocks.forEach(block => {
+          html += `
+            <div class="metric-card" style="border-color:rgba(155,109,255,0.3);background:rgba(155,109,255,0.05);">
+              <div class="metric-sector-header">
+                <span class="metric-sector-name">🛡️ Safety Block — ${block.label}</span>
+                <span class="metric-sector-eff" style="color:var(--purple)">ENFORCED</span>
+              </div>
+              <div class="metric-note" style="color:var(--purple);">${block.reason}</div>
+              <div class="metric-note" style="color:var(--text-muted);font-size:0.66rem;">
+                Optimization blocked — see Utility Commands panel for details.
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      // Per-sector summaries
+      metrics.sectorSummaries.forEach(sector => {
+        if (sector.status === "data_gap") return; // already rendered above
+
+        const effColor = sector.efficiency >= 70 ? "var(--green)"
+                       : sector.efficiency >= 50 ? "var(--amber)" : "var(--red)";
+
+        let noteClass = "safe-note";
+        let noteText  = "Operating within target parameters.";
+
+        if (sector.hasWaste && !sector.isEgressActive) {
+          noteClass = "waste-note";
+          noteText  = `⚡ Energy waste detected — HVAC at ${sector.hvacLoad}% in low-density zone (${sector.crowdDensity}% occupied). Optimization approved.`;
+        } else if (sector.hasWaste && sector.isEgressActive) {
+          noteClass = "";
+          noteText  = `Safety rule active. Optimization proposed but blocked — active egress zone.`;
+        } else if (sector.isEgressActive) {
+          noteClass = "";
+          noteText  = `Active egress zone — all safety parameters maintained at full capacity.`;
+        } else if (sector.binFillLevel >= 90) {
+          noteClass = "waste-note";
+          noteText  = `⚠️ Bin fill critical at ${sector.binFillLevel}% — overflow imminent.`;
+        } else if (sector.binFillLevel >= 75) {
+          noteClass = "waste-note";
+          noteText  = `Bin fill at ${sector.binFillLevel}% — approaching overflow threshold.`;
+        }
+
+        html += `
+          <div class="metric-card ${sector.hasWaste ? 'waste' : ''}">
+            <div class="metric-sector-header">
+              <span class="metric-sector-name">${sector.label}</span>
+              <span class="metric-sector-eff" style="color:${effColor}">${sector.efficiency}%</span>
+            </div>
+            <div class="metric-note ${noteClass}">${noteText}</div>
+            <div class="metric-note" style="color:var(--text-muted);font-size:0.65rem;font-family:'JetBrains Mono',monospace;">
+              Crowd ${sector.crowdDensity ?? "--"}% · Bins ${sector.binFillLevel ?? "--"}% · HVAC ${sector.hvacLoad}% · ${sector.temperature ? sector.temperature.toFixed(1)+"°C" : "--"}
+            </div>
+          </div>
+        `;
+      });
+
+      el.innerHTML = html;
+    }
+
+    // ── ALERTS PANEL ────────────────────────────────────
+    function renderAlertsPanel(result) {
+      const el    = document.getElementById("alertsContent");
+      const badge = document.getElementById("alertsBadge");
+      const alerts = result.alerts;
+
+      badge.textContent = alerts.length + " alert" + (alerts.length !== 1 ? "s" : "");
+      badge.className = alerts.length === 0 ? "panel-badge badge-green"
+                      : alerts.some(a => a.priority === "critical") ? "panel-badge badge-red"
+                      : "panel-badge badge-amber";
+
+      if (alerts.length === 0) {
+        el.innerHTML = `<div class="empty-state">✅ No active alerts — all sectors nominal</div>`;
+        return;
+      }
+
+      let html = "";
+      alerts.forEach((alert, i) => {
+        const meta      = getPriorityMeta(alert.priority);
+        const isSafety  = alert.type === "safety_block";
+        const itemClass = isSafety ? "alert-item alert-safetyblock" : `alert-item ${meta.colorClass}`;
+        const chipClass = isSafety ? "chip-shield" : `chip-${alert.priority}`;
+        const chipLabel = isSafety ? "SAFETY" : meta.label;
+
+        html += `
+          <div class="${itemClass}" role="alert" style="animation-delay:${i * 0.06}s">
+            <span class="alert-icon" aria-hidden="true">${alert.icon}</span>
+            <div class="alert-body">
+              <div class="alert-sector-id">[${alert.sectorId}]</div>
+              <div class="alert-text">${alert.message}</div>
+            </div>
+            <span class="alert-priority-chip ${chipClass}" aria-label="Priority: ${chipLabel}">${chipLabel}</span>
+          </div>
+        `;
+      });
+
+      el.innerHTML = html;
+    }
+
+    // ── UTILITY COMMANDS PANEL ──────────────────────────
+    function renderUtilityPanel(result) {
+      const el       = document.getElementById("utilityContent");
+      const badge    = document.getElementById("utilityBadge");
+      const commands = result.commands;
+      const savings  = result.metrics.savingsEstimate;
+
+      const blockedCount  = commands.filter(c => c.isBlocked).length;
+      const approvedCount = commands.filter(c => !c.isBlocked && !c.isDataGap).length;
+
+      if (blockedCount > 0) {
+        badge.textContent = blockedCount + " safety block" + (blockedCount !== 1 ? "s" : "");
+        badge.className   = "panel-badge badge-red";
+      } else if (approvedCount > 0) {
+        badge.textContent = approvedCount + " optimization" + (approvedCount !== 1 ? "s" : "") + " approved";
+        badge.className   = "panel-badge badge-green";
+      } else {
+        badge.textContent = "No actions pending";
+        badge.className   = "panel-badge";
+      }
+
+      if (commands.length === 0) {
+        el.innerHTML = `<div class="empty-state">No automated commands generated for this state.</div>`;
+        return;
+      }
+
+      let html = "";
+
+      // If there are safety blocks, show an explanatory banner first
+      if (blockedCount > 0) {
+        html += `
+          <div class="safety-block-banner" role="alert" aria-label="Safety priority rule is blocking optimizations">
+            <span class="banner-icon" aria-hidden="true">🛡️</span>
+            <span><strong>Safety Priority Rule Active</strong> — ${blockedCount} proposed optimization${blockedCount > 1 ? "s" : ""}
+            blocked. Fan &amp; egress safety takes precedence over all energy savings.</span>
+          </div>
+        `;
+      }
+
+      // Render commands: blocked first (they're most important to show), then approved, then data gap, then neutral
+      const sorted = [
+        ...commands.filter(c => c.isBlocked),
+        ...commands.filter(c => !c.isBlocked && !c.isDataGap && c.type !== "maintain"),
+        ...commands.filter(c => c.isDataGap),
+        ...commands.filter(c => !c.isBlocked && !c.isDataGap && c.type === "maintain")
+      ];
+
+      sorted.forEach((cmd, i) => {
+        const meta  = getCommandMeta(cmd);
+        const label = cmd.isBlocked ? "BLOCKED" : cmd.isDataGap ? "DATA GAP" : "APPROVED";
+
+        html += `
+          <div class="command-item ${meta.colorClass}" role="listitem" style="animation-delay:${i * 0.07}s"
+               aria-label="${cmd.label} command: ${label}">
+            <div class="command-header">
+              <span class="command-icon" aria-hidden="true">${meta.icon}</span>
+              <span class="command-sector">${cmd.sectorId || cmd.label}</span>
+              <span class="command-chip">${label}</span>
+            </div>
+            <div class="command-action">${cmd.action}</div>
+            ${cmd.estimatedSaving ? `<div class="command-saving">Est. impact: ${cmd.estimatedSaving}</div>` : ""}
+            ${cmd.proposed && cmd.isBlocked ? `<div class="command-saving" style="color:var(--text-muted);">Proposed: ${cmd.proposed}</div>` : ""}
+          </div>
+        `;
+      });
+
+      // Total savings chip (if any approved)
+      if (savings) {
+        html += `
+          <div class="savings-total" aria-label="Total estimated energy savings">
+            <span class="savings-total-label">📉 Estimated Total Savings (approved)</span>
+            <span class="savings-total-value">${savings}</span>
+          </div>
+        `;
+      }
+
+      el.innerHTML = html;
+    }
+
+    // ── HELPERS ─────────────────────────────────────────
+    function formatTimestamp(isoStr) {
+      try {
+        const d = new Date(isoStr);
+        return d.toUTCString().replace(" GMT", " UTC");
+      } catch (e) { return isoStr; }
+    }
+
+    // ── INITIAL RENDER ───────────────────────────────────
+    renderDashboard(currentScenarioId);
+  </script>
+
+</body>
+</html>
