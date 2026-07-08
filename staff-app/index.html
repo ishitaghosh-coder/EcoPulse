@@ -12,17 +12,9 @@
   <!-- ═══════════════════════════════════════════════════════
        PORTAL NAV BAR — links to all three EcoPulse portals
   ═══════════════════════════════════════════════════════ -->
-  <div style="
-    position:sticky; top:0; z-index:200;
-    background:rgba(4,8,18,0.97);
-    backdrop-filter:blur(20px);
-    border-bottom:1px solid rgba(0,232,124,0.2);
-    padding:8px 28px;
-    display:flex; align-items:center; gap:12px;
-    font-family:'Outfit',sans-serif;
-  ">
-    <span style="font-size:0.62rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#4a5578;">EcoPulse Portals</span>
-    <div style="flex:1;height:1px;background:rgba(255,255,255,0.06);"></div>
+  <div class="portal-navbar">
+    <span class="portal-navbar-title" style="font-size:0.62rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#4a5578;">EcoPulse Portals</span>
+    <div class="portal-navbar-divider" style="flex:1;height:1px;background:rgba(255,255,255,0.06);"></div>
 
     <a href="/" style="
       padding:5px 14px; border-radius:100px;
@@ -48,8 +40,8 @@
       display:flex; align-items:center; gap:6px;
     ">👷 Staff App</a>
 
-    <div style="height:1px;background:rgba(255,255,255,0.06);flex:1;"></div>
-    <span style="font-size:0.6rem;color:#4a5578;font-family:'JetBrains Mono',monospace;">FIFA WC 2026</span>
+    <div class="portal-navbar-divider" style="height:1px;background:rgba(255,255,255,0.06);flex:1;"></div>
+    <span class="portal-navbar-footer" style="font-size:0.6rem;color:#4a5578;font-family:'JetBrains Mono',monospace;">FIFA WC 2026</span>
   </div>
 
 <div class="app-shell">
@@ -57,7 +49,7 @@
   <!-- ══════════════════════════════════════════════
        LOGIN VIEW
   ══════════════════════════════════════════════ -->
-  <div id="loginView" class="view active login-view">
+  <div id="loginView" class="view active login-view page-container">
 
     <div class="login-logo">
       <div class="login-logo-icon">
@@ -160,7 +152,7 @@
     </header>
 
     <!-- Scrollable Content -->
-    <div class="dash-content" id="dashContent">
+    <div class="dash-content page-container" id="dashContent">
 
       <!-- Hero welcome card -->
       <div class="hero-card" id="heroCard">

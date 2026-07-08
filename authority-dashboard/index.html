@@ -12,17 +12,9 @@
   <!-- ═══════════════════════════════════════════════════════
        PORTAL NAV BAR — links to all three EcoPulse portals
   ═══════════════════════════════════════════════════════ -->
-  <div style="
-    position:sticky; top:0; z-index:200;
-    background:rgba(4,8,18,0.97);
-    backdrop-filter:blur(20px);
-    border-bottom:1px solid rgba(0,232,124,0.2);
-    padding:8px 28px;
-    display:flex; align-items:center; gap:12px;
-    font-family:'Outfit',sans-serif;
-  ">
-    <span style="font-size:0.62rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#4a5578;">EcoPulse Portals</span>
-    <div style="flex:1;height:1px;background:rgba(255,255,255,0.06);"></div>
+  <div class="portal-navbar">
+    <span class="portal-navbar-title" style="font-size:0.62rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#4a5578;">EcoPulse Portals</span>
+    <div class="portal-navbar-divider" style="flex:1;height:1px;background:rgba(255,255,255,0.06);"></div>
 
     <a href="/" style="
       padding:5px 14px; border-radius:100px;
@@ -43,61 +35,62 @@
     <a href="/staff-app" style="
       padding:5px 14px; border-radius:100px;
       background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);
-      font-size:0.72rem; font-weight:700; color:#8899bb;
-      text-decoration:none; letter-spacing:0.04em;
-      display:flex; align-items:center; gap:6px;
-    ">👷 Staff App</a>
+    <span class="portal-navbar-title">EcoPulse Portals</span>
+    <div class="portal-navbar-divider"></div>
 
-    <div style="height:1px;background:rgba(255,255,255,0.06);flex:1;"></div>
-    <span style="font-size:0.6rem;color:#4a5578;font-family:'JetBrains Mono',monospace;">FIFA WC 2026</span>
+    <a href="/">⚡ Ops Engine</a>
+    <a href="/authority-dashboard" class="active">🏟️ Authority Dashboard</a>
+    <a href="/staff-app">👷 Staff App</a>
+
+    <div class="portal-navbar-divider"></div>
+    <span class="portal-navbar-footer">FIFA WC 2026</span>
   </div>
 
 <!-- ══════════════════════════════════════════════════════
      LOGIN VIEW
 ══════════════════════════════════════════════════════ -->
 <div id="loginView" class="view active" style="min-height:100vh;align-items:center;justify-content:center;flex-direction:column;padding:24px;gap:0;">
-
-  <div class="auth-logo">
-    <div class="auth-logo-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#050810" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 22V12"/><path d="M5 3s.55 7.07 3.5 9.5S17 14 17 14"/><path d="M19 3s-.55 7.07-3.5 9.5S7 14 7 14"/>
-        <line x1="12" y1="12" x2="8" y2="17"/>
-      </svg>
+  <div class="page-container" style="display:flex; flex-direction:column; align-items:center; justify-content:center; width:100%;">
+    <div class="auth-logo">
+      <div class="auth-logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#050810" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22V12"/><path d="M5 3s.55 7.07 3.5 9.5S17 14 17 14"/><path d="M19 3s-.55 7.07-3.5 9.5S7 14 7 14"/>
+          <line x1="12" y1="12" x2="8" y2="17"/>
+        </svg>
+      </div>
+      <span class="auth-logo-text">EcoPulse<span>Stadium</span></span>
     </div>
-    <span class="auth-logo-text">EcoPulse<span>Stadium</span></span>
+    <div class="auth-subtitle">Authority Operations Center · FIFA World Cup 2026</div>
+
+    <div class="auth-card">
+      <div class="auth-card-title">🏟️ Organizer Sign In</div>
+      <div class="auth-card-sub">Secure portal for venue organizers, FIFA officials, and operations command staff. Enter your authority credentials to access the full operations center.</div>
+
+      <form id="authForm">
+        <div class="form-group">
+          <label for="authEmail">Authority Email / Username</label>
+          <input id="authEmail" type="text" placeholder="e.g. ops@fifa2026.org" required/>
+        </div>
+        <div class="form-group">
+          <label for="authPass">Access Code</label>
+          <input id="authPass" type="password" placeholder="Enter your access code" required/>
+        </div>
+        <div class="form-group">
+          <label for="authRole">Your Official Role</label>
+          <select id="authRole" required>
+            <option value="" disabled selected>Select your system role...</option>
+            <option value="FIFA Venue Director">FIFA Venue Director</option>
+            <option value="Sustainability Coordinator">Sustainability Coordinator</option>
+            <option value="Security Commander">Security Commander</option>
+            <option value="Technology Command Officer">Technology Command Officer</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-auth">Access Operations Center →</button>
+      </form>
+
+      <div class="auth-hint">Demo: any non-empty credentials · EcoPulse v1.0</div>
+    </div>
   </div>
-  <div class="auth-subtitle">Authority Operations Center · FIFA World Cup 2026</div>
-
-  <div class="auth-card">
-    <div class="auth-card-title">🏟️ Organizer Sign In</div>
-    <div class="auth-card-sub">Secure portal for venue organizers, FIFA officials, and operations command staff. Enter your authority credentials to access the full operations center.</div>
-
-    <form id="authForm">
-      <div class="form-group">
-        <label for="authEmail">Authority Email / Username</label>
-        <input id="authEmail" type="text" placeholder="e.g. ops@fifa2026.org" required/>
-      </div>
-      <div class="form-group">
-        <label for="authPass">Access Code</label>
-        <input id="authPass" type="password" placeholder="Enter your access code" required/>
-      </div>
-      <div class="form-group">
-        <label for="authRole">Authority Role</label>
-        <select id="authRole" required>
-          <option value="" disabled selected>Select your authority level…</option>
-          <option value="Venue Operations Director">Venue Operations Director</option>
-          <option value="FIFA Tournament Official">FIFA Tournament Official</option>
-          <option value="Sustainability Coordinator">Sustainability Coordinator</option>
-          <option value="Security Commander">Security Commander</option>
-          <option value="Technology Command Officer">Technology Command Officer</option>
-        </select>
-      </div>
-      <button type="submit" class="btn-auth">Access Operations Center →</button>
-    </form>
-
-    <div class="auth-hint">Demo: any non-empty credentials · EcoPulse v1.0</div>
-  </div>
-
 </div>
 
 <!-- ══════════════════════════════════════════════════════
@@ -152,257 +145,6 @@
 
   <!-- MAIN AREA -->
   <div class="main-area">
-
-    <!-- TOP BAR -->
-    <div class="topbar">
-      <div class="topbar-match">
-        <div class="topbar-match-name" id="topbarMatch">Group A · Brazil vs Argentina</div>
-        <div class="topbar-match-sub" id="topbarVenue">MetLife Stadium · New York / New Jersey</div>
-      </div>
-
-      <div class="topbar-spacer"></div>
-
-      <!-- Scenario selector -->
-      <div class="topbar-tabs" role="tablist">
-        <button class="topbar-tab" data-scenario="prematch" onclick="switchScenario(this)" role="tab">⚽ Pre-Match</button>
-        <button class="topbar-tab active" data-scenario="minute75" onclick="switchScenario(this)" role="tab">🔥 75th Min</button>
-        <button class="topbar-tab" data-scenario="postmatch" onclick="switchScenario(this)" role="tab">🚪 Post-Match</button>
-        <button class="topbar-tab" data-scenario="datagap" onclick="switchScenario(this)" role="tab">📡 Data Gap</button>
-      </div>
-
-      <div class="live-badge">
-        <span class="pulse-dot"></span>
-        Live
-      </div>
-    </div>
-
-    <!-- ── OVERVIEW SECTION ─────────────────────────────── -->
-    <section class="section-content active" id="sec-overview">
-      <div>
-        <div class="section-heading">Operations Overview</div>
-        <div class="section-sub" id="overviewDesc">Real-time stadium intelligence across all 5 sectors. EcoPulse reasoning engine active.</div>
-      </div>
-
-      <!-- KPI Row -->
-      <div class="kpi-row" id="kpiRow">
-        <div class="kpi-card kpi-green">
-          <div class="kpi-icon">📊</div>
-          <div class="kpi-value" id="kpiScore">--</div>
-          <div class="kpi-label">Efficiency Score</div>
-          <div class="kpi-sub">Out of 100 · Updated live</div>
-        </div>
-        <div class="kpi-card kpi-amber">
-          <div class="kpi-icon">🔔</div>
-          <div class="kpi-value" id="kpiAlerts">--</div>
-          <div class="kpi-label">Active Alerts</div>
-          <div class="kpi-sub">Across all sectors</div>
-        </div>
-        <div class="kpi-card kpi-red">
-          <div class="kpi-icon">🛡️</div>
-          <div class="kpi-value" id="kpiBlocks">--</div>
-          <div class="kpi-label">Safety Blocks</div>
-          <div class="kpi-sub">Optimizations overridden</div>
-        </div>
-        <div class="kpi-card kpi-blue">
-          <div class="kpi-icon">📡</div>
-          <div class="kpi-value" id="kpiGaps">--</div>
-          <div class="kpi-label">Data Gaps</div>
-          <div class="kpi-sub">Sensors stale or offline</div>
-        </div>
-      </div>
-
-      <!-- Sector Overview Grid -->
-      <div>
-        <div style="font-size:0.78rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-s);margin-bottom:10px;">Live Sector Status</div>
-        <div class="sector-ov-grid" id="sectorOvGrid"><!-- JS --></div>
-      </div>
-    </section>
-
-    <!-- ── OPERATIONS SECTION ───────────────────────────── -->
-    <section class="section-content" id="sec-operations">
-      <div>
-        <div class="section-heading">⚡ Operations Command Center</div>
-        <div class="section-sub">EcoPulse GenAI reasoning output — three synchronized operational blocks. Safety-first rule enforced across all commands.</div>
-      </div>
-
-      <!-- Safety rule banner if blocks exist -->
-      <div class="safety-banner" id="opsBlockBanner" style="display:none;">
-        <span style="font-size:1.2rem;">🛡️</span>
-        <span><strong>Safety Priority Rule Active</strong> — <span id="opsBlockCount">0</span> proposed optimization(s) blocked to protect fan safety in active egress zones. These are shown explicitly in the Utility Commands panel below.</span>
-      </div>
-
-      <div class="ops-grid" id="opsGrid">
-        <!-- Three panels: Organizer Metrics | Staff Alerts | Utility Commands -->
-        <article class="ops-panel" aria-labelledby="opsMTitle">
-          <div class="ops-panel-header" style="background:linear-gradient(135deg,rgba(0,232,124,0.06),transparent);">
-            <span>📊</span>
-            <div class="ops-panel-title" id="opsMTitle">Organizer Sustainability Metrics</div>
-            <div class="panel-chip chip-g" id="opsScoreChip">Score: --</div>
-          </div>
-          <div class="ops-panel-body" id="opsMetricsBody"><!-- JS --></div>
-        </article>
-
-        <article class="ops-panel" aria-labelledby="opsATitle">
-          <div class="ops-panel-header" style="background:linear-gradient(135deg,rgba(255,171,0,0.05),transparent);">
-            <span>🔔</span>
-            <div class="ops-panel-title" id="opsATitle">Ground Staff Alerts</div>
-            <div class="panel-chip" id="opsAlertChip">0 alerts</div>
-          </div>
-          <div class="ops-panel-body" id="opsAlertsBody"><!-- JS --></div>
-        </article>
-
-        <article class="ops-panel" aria-labelledby="opsUTitle">
-          <div class="ops-panel-header" style="background:linear-gradient(135deg,rgba(45,156,255,0.06),transparent);">
-            <span>⚡</span>
-            <div class="ops-panel-title" id="opsUTitle">Automated Utility Commands</div>
-            <div class="panel-chip chip-b" id="opsUtilChip">Computing…</div>
-          </div>
-          <div class="ops-panel-body" id="opsUtilBody"><!-- JS --></div>
-        </article>
-      </div>
-    </section>
-
-    <!-- ── STAFF MANAGEMENT SECTION ─────────────────────── -->
-    <section class="section-content" id="sec-staff">
-      <div>
-        <div class="section-heading">👥 Staff Management</div>
-        <div class="section-sub">On-duty volunteer and paid staff roster for MetLife Stadium — current match day. Sorted by sector and role.</div>
-      </div>
-
-      <!-- Stats row -->
-      <div class="staff-stats-row" id="staffStatsRow"><!-- JS --></div>
-
-      <!-- Filters -->
-      <div class="staff-filters">
-        <select class="filter-select" id="filterRole" onchange="renderStaffTable()">
-          <option value="">All Roles</option>
-          <option value="Security Officer">Security Officer</option>
-          <option value="Cleaning Crew">Cleaning Crew</option>
-          <option value="Medical Staff">Medical Staff</option>
-          <option value="Tech Support">Tech Support</option>
-          <option value="Event Volunteer">Event Volunteer</option>
-        </select>
-        <select class="filter-select" id="filterSector" onchange="renderStaffTable()">
-          <option value="">All Sectors</option>
-          <option value="North Concourse">North Concourse</option>
-          <option value="South Concourse">South Concourse</option>
-          <option value="East Concourse">East Concourse</option>
-          <option value="West Concourse">West Concourse</option>
-          <option value="Pitch Zone">Pitch Zone</option>
-        </select>
-        <select class="filter-select" id="filterStatus" onchange="renderStaffTable()">
-          <option value="">All Statuses</option>
-          <option value="on-duty">On Duty</option>
-          <option value="alert">On Alert</option>
-          <option value="on-break">On Break</option>
-        </select>
-      </div>
-
-      <div class="staff-table-wrap">
-        <div class="log-header" style="display:grid;grid-template-columns:1.2fr 1.2fr 1.3fr 1.2fr 80px 90px;">
-          <div>Name</div><div>Role</div><div>Sector</div><div>Staff ID</div><div>Status</div><div>Last Check-in</div>
-        </div>
-        <div id="staffTableBody"><!-- JS --></div>
-      </div>
-    </section>
-
-    <!-- ── SUSTAINABILITY SECTION ────────────────────────── -->
-    <section class="section-content" id="sec-sustainability">
-      <div>
-        <div class="section-heading">🌿 Sustainability Metrics</div>
-        <div class="section-sub" id="susDesc">Live energy, waste, and carbon data for this match. EcoPulse optimizations applied where safety rules permit.</div>
-      </div>
-
-      <!-- Summary stats -->
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;" id="susTopStats"><!-- JS --></div>
-
-      <div class="sus-grid" id="susGrid">
-        <!-- HVAC Energy by Sector -->
-        <div class="sus-card">
-          <div class="sus-card-title">❄️ HVAC Load by Sector (%)</div>
-          <div id="hvacChart"><!-- JS --></div>
-        </div>
-
-        <!-- Crowd Density by Sector -->
-        <div class="sus-card">
-          <div class="sus-card-title">👥 Crowd Density by Sector (%)</div>
-          <div id="crowdChart"><!-- JS --></div>
-        </div>
-
-        <!-- Bin fill -->
-        <div class="sus-card">
-          <div class="sus-card-title">🗑️ Bin Fill Levels (%)</div>
-          <div id="binChart"><!-- JS --></div>
-        </div>
-
-        <!-- Key sustainability metrics -->
-        <div class="sus-card">
-          <div class="sus-card-title">📉 Estimated Optimizations (this match)</div>
-          <div class="sus-stat-row" id="susStats"><!-- JS --></div>
-        </div>
-
-        <!-- Carbon context card -->
-        <div class="sus-card sus-full">
-          <div class="sus-card-title">🌍 Tournament Carbon Context</div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
-            <div class="sus-stat">
-              <div class="sus-stat-val" style="color:var(--red);">9M</div>
-              <div class="sus-stat-lbl">Tonnes CO₂e</div>
-              <div class="sus-stat-sub">Projected tournament footprint</div>
-            </div>
-            <div class="sus-stat">
-              <div class="sus-stat-val" style="color:var(--amber);">65%</div>
-              <div class="sus-stat-lbl">From Air Travel</div>
-              <div class="sus-stat-sub">Primary emissions driver</div>
-            </div>
-            <div class="sus-stat">
-              <div class="sus-stat-val" style="color:var(--green);">40%</div>
-              <div class="sus-stat-lbl">HVAC Savings Target</div>
-              <div class="sus-stat-sub">Low-density zone optimization</div>
-            </div>
-            <div class="sus-stat">
-              <div class="sus-stat-val" style="color:var(--green);">65%</div>
-              <div class="sus-stat-lbl">Water Reduction</div>
-              <div class="sus-stat-sub">vs. 2018 baseline (greywater)</div>
-            </div>
-            <div class="sus-stat">
-              <div class="sus-stat-val" style="color:var(--blue);">16</div>
-              <div class="sus-stat-lbl">Venues</div>
-              <div class="sus-stat-sub">3 countries · 104 matches</div>
-            </div>
-            <div class="sus-stat">
-              <div class="sus-stat-val" style="color:var(--purple);">5.5M+</div>
-              <div class="sus-stat-lbl">Attendees</div>
-              <div class="sus-stat-sub">Projected total attendance</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── ALERT LOG SECTION ──────────────────────────────── -->
-    <section class="section-content" id="sec-log">
-      <div>
-        <div class="section-heading">📋 Alert History Log</div>
-        <div class="section-sub">Aggregated alerts across all 4 match scenarios. Filter by priority, type, or sector.</div>
-      </div>
-
-      <div class="log-filters">
-        <select class="filter-select" id="logFilterPrio" onchange="renderLogTable()">
-          <option value="">All Priorities</option>
-          <option value="critical">Critical</option>
-          <option value="warning">Warning</option>
-          <option value="info">Info</option>
-        </select>
-        <select class="filter-select" id="logFilterType" onchange="renderLogTable()">
-          <option value="">All Types</option>
-          <option value="crowd_surge">Crowd Surge</option>
-          <option value="bin_overflow">Bin Overflow</option>
-          <option value="bin_fill">Bin Fill</option>
-          <option value="safety_block">Safety Block</option>
-          <option value="data_gap">Data Gap</option>
-          <option value="egress_active">Egress Active</option>
-          <option value="temperature">Temperature</option>
         </select>
         <select class="filter-select" id="logFilterScenario" onchange="renderLogTable()">
           <option value="">All Scenarios</option>

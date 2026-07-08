@@ -957,3 +957,121 @@ tr:hover td { background:var(--bg-hover); }
   .main-area { margin-left:56px; }
   .ops-grid { grid-template-columns:1fr; }
 }
+
+/* ── PORTAL NAVBAR & PAGE CONTAINER ────────────────────────── */
+.portal-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(4, 8, 18, 0.97);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0, 232, 124, 0.2);
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Outfit', sans-serif;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.portal-navbar::-webkit-scrollbar {
+  display: none;
+}
+.portal-navbar a {
+  flex-shrink: 0;
+  padding: 5px 14px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #8899bb;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.portal-navbar a.active {
+  background: rgba(45, 156, 255, 0.12) !important;
+  border-color: rgba(45, 156, 255, 0.28) !important;
+  color: #2d9cff !important;
+}
+.portal-navbar-title,
+.portal-navbar-divider,
+.portal-navbar-footer {
+  flex-shrink: 0;
+}
+
+.page-container {
+  padding: 16px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+@media(max-width: 640px) {
+  .portal-navbar-title,
+  .portal-navbar-divider,
+  .portal-navbar-footer {
+    display: none !important;
+  }
+  .portal-navbar {
+    justify-content: flex-start;
+    padding: 8px 12px;
+  }
+  .topbar {
+    flex-direction: column;
+    height: auto;
+    padding: 12px;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .topbar-match {
+    margin-bottom: 4px;
+  }
+  .topbar-tabs {
+    overflow-x: auto;
+    white-space: nowrap;
+    display: flex;
+    flex-wrap: nowrap;
+    padding: 4px 0;
+    scrollbar-width: none;
+  }
+  .topbar-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .topbar-tab {
+    flex-shrink: 0;
+  }
+  .live-badge {
+    align-self: flex-start;
+  }
+  .kpi-row {
+    grid-template-columns: 1fr !important;
+  }
+  .sector-ov-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .ops-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .sus-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .staff-stats-row {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .staff-table-wrap, .log-table-wrap {
+    overflow-x: auto;
+  }
+  .log-row, .log-header {
+    grid-template-columns: 70px 90px 110px 200px 80px;
+    width: 550px;
+  }
+  .log-row > :last-child, .log-header > :last-child {
+    display: block !important;
+  }
+}
