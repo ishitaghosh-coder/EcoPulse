@@ -1,0 +1,31 @@
+{
+  "name": "ecopulse",
+  "version": "1.0.0",
+  "description": "[![Demo](https://img.shields.io/badge/demo-live-00e87c?style=flat-square&logo=html5)](#) [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](#) [![FIFA WC 2026](https://img.shields.io/badge/FIFA%20WC-2026-purple?style=flat-square)](#)",
+  "main": "engine.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ishitaghosh-coder/EcoPulse.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ishitaghosh-coder/EcoPulse/issues"
+  },
+  "homepage": "https://github.com/ishitaghosh-coder/EcoPulse#readme",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "bcryptjs": "^3.0.3",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.7.4",
+    "next": "^14.2.35",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}
