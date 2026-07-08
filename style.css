@@ -1,6 +1,6 @@
 /* ============================================================
    EcoPulse Stadium — Design System & Dashboard Styles
-   FIFA World Cup 2026 · GenAI Sustainability & Operations Engine
+   FIFA World Cup · GenAI Sustainability & Operations Engine
    ============================================================ */
 
 /* ── GOOGLE FONTS ─────────────────────────────────────────── */
@@ -996,4 +996,158 @@ body::before {
   .form-row {
     flex-direction: column !important;
   }
+}
+
+/* ── OPS ENGINE LOGIN OVERLAY ────────────────────────────── */
+.ops-login-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: radial-gradient(ellipse at 50% 30%, rgba(0, 232, 124, 0.06) 0%, rgba(6, 10, 20, 0.98) 70%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  font-family: 'Outfit', sans-serif;
+}
+
+.ops-login-card {
+  width: 100%;
+  max-width: 400px;
+  background: rgba(10, 18, 35, 0.92);
+  border: 1px solid rgba(0, 232, 124, 0.2);
+  border-radius: 20px;
+  padding: 36px 32px;
+  box-shadow: 0 0 60px rgba(0, 232, 124, 0.08), 0 24px 80px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(24px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.ops-login-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.ops-login-logo-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #00e87c, #00b4d8);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 20px rgba(0, 232, 124, 0.3);
+}
+
+.ops-login-logo-icon svg { width: 22px; height: 22px; }
+
+.ops-login-logo-text {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.ops-login-logo-text span {
+  color: #00e87c;
+  margin-left: 4px;
+}
+
+.ops-login-subtitle {
+  font-size: 0.75rem;
+  color: #4a5578;
+  letter-spacing: 0.04em;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.ops-login-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 100px;
+  background: rgba(0, 232, 124, 0.1);
+  border: 1px solid rgba(0, 232, 124, 0.25);
+  color: #00e87c;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+
+.ops-form-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.ops-form-group label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #8899bb;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ops-form-group input {
+  width: 100%;
+  padding: 11px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #ffffff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.ops-form-group input:focus {
+  border-color: rgba(0, 232, 124, 0.45);
+  box-shadow: 0 0 0 3px rgba(0, 232, 124, 0.1);
+}
+
+.ops-login-btn {
+  width: 100%;
+  padding: 13px;
+  margin-top: 8px;
+  background: linear-gradient(135deg, #00e87c, #00b4d8);
+  border: none;
+  border-radius: 12px;
+  color: #050810;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  box-shadow: 0 4px 20px rgba(0, 232, 124, 0.3);
+}
+
+.ops-login-btn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.ops-login-btn:active {
+  transform: translateY(0);
+}
+
+.ops-login-hint {
+  margin-top: 18px;
+  font-size: 0.67rem;
+  color: #4a5578;
+  text-align: center;
 }

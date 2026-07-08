@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EcoPulse Stadium — GenAI Sustainability & Operations Engine · FIFA World Cup 2026</title>
-  <meta name="description" content="EcoPulse Stadium is a GenAI-powered real-time sustainability and operations reasoning engine for FIFA World Cup 2026 stadiums. It ingests live telemetry and produces synchronized organizer metrics, staff alerts, and automated utility commands with a hard-coded safety-first priority rule." />
+  <title>EcoPulse Stadium — GenAI Sustainability & Operations Engine · FIFA World Cup</title>
+  <meta name="description" content="EcoPulse Stadium is a GenAI-powered real-time sustainability and operations reasoning engine for FIFA World Cup stadiums. It ingests live telemetry and produces synchronized organizer metrics, staff alerts, and automated utility commands with a hard-coded safety-first priority rule." />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="EcoPulse Stadium · FIFA World Cup 2026" />
+  <meta property="og:title" content="EcoPulse Stadium · FIFA World Cup" />
   <meta property="og:description" content="GenAI reasoning engine for stadium sustainability and operations. Safety-first. Sense → Reason → Act." />
   <meta property="og:type" content="website" />
 
@@ -48,9 +48,44 @@
     ">👷 Staff App</a>
 
     <div class="portal-navbar-divider" style="height:1px;background:rgba(255,255,255,0.06);flex:1;"></div>
-    <span class="portal-navbar-footer" style="font-size:0.6rem;color:#4a5578;font-family:'JetBrains Mono',monospace;">FIFA WC 2026</span>
+    <span class="portal-navbar-footer" style="font-size:0.6rem;color:#4a5578;font-family:'JetBrains Mono',monospace;">FIFA WC</span>
   </div>
 
+  <!-- ═══════════════════════════════════════════════════════
+       OPS ENGINE LOGIN GATE — staff-only access
+  ═══════════════════════════════════════════════════════ -->
+  <div id="opsLoginView" class="ops-login-overlay">
+    <div class="ops-login-card">
+      <div class="ops-login-logo">
+        <div class="ops-login-logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#050810" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22V12"/><path d="M5 3s.55 7.07 3.5 9.5S17 14 17 14"/><path d="M19 3s-.55 7.07-3.5 9.5S7 14 7 14"/>
+            <line x1="12" y1="12" x2="8" y2="17"/>
+          </svg>
+        </div>
+        <span class="ops-login-logo-text">EcoPulse<span>Stadium</span></span>
+      </div>
+      <div class="ops-login-subtitle">Operations Engine · Staff Access Only</div>
+
+      <div class="ops-login-badge">⚡ Restricted Portal</div>
+
+      <form id="opsLoginForm" autocomplete="off">
+        <div class="ops-form-group">
+          <label for="opsStaffName">Full Name</label>
+          <input id="opsStaffName" type="text" placeholder="e.g. Alex Rivera" required />
+        </div>
+        <div class="ops-form-group">
+          <label for="opsStaffId">Staff ID</label>
+          <input id="opsStaffId" type="text" placeholder="ST-XXXXX" required />
+        </div>
+        <button type="submit" class="ops-login-btn">Access Ops Engine →</button>
+      </form>
+
+      <div class="ops-login-hint">Demo: any non-empty credentials · EcoPulse v1.0</div>
+    </div>
+  </div>
+
+  <div id="opsMainView" style="display:none;">
   <div class="page-container">
 
   <!-- ═══════════════════════════════════════════════════════
@@ -218,11 +253,12 @@
       Egress zones and active crowd zones are never throttled.
     </div>
     <div class="footer-meta">
-      EcoPulse Stadium v1.0 &nbsp;·&nbsp; FIFA World Cup 2026 &nbsp;·&nbsp;
+      EcoPulse Stadium v1.0 &nbsp;·&nbsp; FIFA World Cup &nbsp;·&nbsp;
       Reasoning engine: rule-logic mirror of LLM system prompt — designed to swap for live Antigravity/Gemini API in production.
     </div>
   </footer>
   </div>
+  </div><!-- /opsMainView -->
 
   <!-- ═══════════════════════════════════════════════════════
        SCRIPTS
@@ -230,6 +266,39 @@
   <script src="/telemetry.js"></script>
   <script src="/engine.js"></script>
   <script>
+    /* ───────────────────────────────────────────────────────
+       OPS ENGINE LOGIN GATE
+       Only authenticated staff can see the dashboard.
+       Auth token lives in sessionStorage (cleared on tab close).
+    ─────────────────────────────────────────────────────── */
+    (function initLoginGate() {
+      const loginView = document.getElementById("opsLoginView");
+      const mainView  = document.getElementById("opsMainView");
+      const form      = document.getElementById("opsLoginForm");
+
+      function showMain() {
+        loginView.style.display = "none";
+        mainView.style.display  = "block";
+      }
+
+      // Already authenticated this session?
+      if (sessionStorage.getItem("ep_ops_auth")) {
+        showMain();
+      }
+
+      form.addEventListener("submit", function(e) {
+        e.preventDefault();
+        const name = document.getElementById("opsStaffName").value.trim();
+        const id   = document.getElementById("opsStaffId").value.trim();
+        if (!name || !id) return;
+
+        sessionStorage.setItem("ep_ops_auth", JSON.stringify({ name, id }));
+        showMain();
+        // Render after the view becomes visible
+        renderDashboard(currentScenarioId);
+      });
+    })();
+
     /* ───────────────────────────────────────────────────────
        DASHBOARD CONTROLLER
        Wires scenario tabs → engine → three output panels
